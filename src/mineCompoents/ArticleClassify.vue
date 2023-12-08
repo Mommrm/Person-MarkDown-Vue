@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div class="to-create-container">
+            <button class="create-button" @click="toEditorPage">去创作</button>
+        </div>
         <div class="article-classify-container">
             <div class="classify-item">
                 <div class="item">
@@ -46,7 +49,9 @@ export default ({
     },
 
     methods: {
-
+        toEditorPage() {
+            this.$router.push('/editorpage');
+        }
     }
 })
 
@@ -60,6 +65,20 @@ export default ({
     border: 1px solid rgb(247, 247, 247);
     border-radius: 5px;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.create-button {
+    background-color: rgb(20, 109, 252);
+    border: 1px solid grey;
+    border-radius: 10px;
+    color: white;
+    width: 20vh;
+    padding: 1vh 0px;
+}
+
+.create-button:hover {
+    background-color: rgb(51, 129, 255);
+
 }
 
 .classify-item {

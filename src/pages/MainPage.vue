@@ -13,13 +13,11 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue';
-import AboutMe from '@/mineCompoents/AboutMe.vue'
 import router from '@/router';
 
 export default {
   components: {
     Navbar,
-    AboutMe,
     router
   }
 }

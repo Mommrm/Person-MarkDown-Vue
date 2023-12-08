@@ -12,6 +12,8 @@
     "bootstrap": "^5.3.2",
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
+    "lodash-es": "^4.17.21",
+    "marked": "^11.0.0",
     "vue": "^2.7.15",
     "vue-router": "^3.6.5"
   },

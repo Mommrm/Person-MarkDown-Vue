@@ -14,9 +14,6 @@
                 </div>
             </div>
         </div>
-        <div class="button">
-            <button type="button" @click="toEditorPage">去创作</button>
-        </div>
     </div>
 </template>
 
