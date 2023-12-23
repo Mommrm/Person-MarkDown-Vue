@@ -24,6 +24,7 @@
 
 
 <script>
+import { postLogin, postLoginOut } from '../axios/request'
 
 export default ({
     data() {
@@ -42,6 +43,9 @@ export default ({
             if (this.user.username == "" || this.user.password == "") {
                 alert("用户名或密码不能为空");
                 return; // 返回
+            }
+            else {
+                postLogin(this.user.username, this.user.password);
             }
         }
     }

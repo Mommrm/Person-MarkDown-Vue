@@ -1,5 +1,14 @@
 <template>
     <div class="editorpage-container">
+        <div class="container-topic">
+            <div class="input-topic">
+                <input type="text" placeholder="输入文字标题..." v-model="article.topic">
+            </div>
+            <div class="publish-logic">
+                <button @click="saveToDraft" class="draft-button">存草稿</button>
+                <button @click="publishArticle" class="publish-button">发布</button>
+            </div>
+        </div>
         <div class="container-menu-bar">
             <div class="bar-item">
                 标题
@@ -17,13 +26,13 @@
         <div class="container-main">
             <div class="input-area">
                 <div class="textarea-container">
-                    <textarea class="input-textarea" v-model="inputContent" placeholder="支持简单的markdown语法"
+                    <textarea class="input-textarea" v-model="article.content" placeholder="支持简单的markdown语法"
                         @input="inputText()" @keydown.enter="checkEnter"></textarea>
                 </div>
             </div>
             <div class="show-area">
                 <div class="body-preview">
-                    {{ inputContent }}
+                    {{ article.content }}
                 </div>
             </div>
         </div>
@@ -44,20 +53,36 @@
 export default ({
     data() {
         return {
-            inputContent: "",
             textNum: 0,
             enterNum: 1,
+            article: {
+                articleId: -1,
+                topic: "",
+                author: "",
+                date: "",
+                abstract: "",
+                content: "",
+            }
         }
     },
     methods: {
+        //输入时调用更新文章内容
         inputText() {
-            this.textNum = this.inputContent.length;
+            this.textNum = this.article.content.length;
         },
+        //更新行数
         checkEnter(event) {
             if (event.key === "Enter") {
                 console.log(this.enterNum);
                 this.enterNum++;
             }
+        },
+        saveToDraft() {
+            //redis缓存草稿 并退出发布页面
+            this.$router.push("/community");
+        },
+        publishArticle() {
+            //发布文章
         }
     }
 })
@@ -82,6 +107,49 @@ export default ({
     border-top: 1px solid rgb(212, 212, 212);
     border-bottom: 1px solid rgb(212, 212, 212);
     margin-bottom: 3px;
+}
+
+/* 标题栏 */
+.container-topic {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input-topic {
+    width: 100%;
+}
+
+.input-topic input {
+    width: 75%;
+    padding: 10px 40px;
+    border: none;
+    outline: none;
+    font-size: x-large;
+}
+
+.publish-logic {
+    display: flex;
+    width: 10%;
+    justify-content: space-around;
+}
+
+.draft-button {
+    background-color: transparent;
+    border: 1px solid;
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    flex-shrink: 0;
+}
+
+.publish-button {
+    background-color: rgb(20, 109, 252);
+    border: 1px solid black;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 20px;
+    flex-shrink: 0;
 }
 
 .bar-item {
