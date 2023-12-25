@@ -6,12 +6,15 @@
                     登陆
                 </div>
             </div>
+            <div class="login-message-container">
+                <p>{{ loginMessage }}</p>
+            </div>
             <div class="land-input">
                 <div class="user-input-container">
-                    <input class="user-input" type="text" placeholder="用户名" v-model="user.username">
+                    <input class="user-input" type="text" placeholder="邮箱" v-model="user.email">
                 </div>
                 <div class="user-input-container">
-                    <input class="user-input" type="password" placeholder="密码" v-model="user.password">
+                    <input class="user-input" type="password" placeholder="密码" v-model="user.password" @keyup.enter="login">
                 </div>
                 <div class="land-other">
                     <router-link to="/register">没有账号？去注册</router-link>
@@ -24,28 +27,55 @@
 
 
 <script>
-import { postLogin, postLoginOut } from '../axios/request'
+const { postLogin } = require('../axios/userRequest')
 
 export default ({
     data() {
         return {
             user: {
-                username: "",
                 password: "",
+                email: "",
+            },
+            token: "1",
+        }
+    },
+    computed: {
+        loginMessage() {
+            if (this.token == "error") {
+                return "服务器异常，请稍后再试!";
+            }
+            else if (this.token == "") {
+                return "邮箱或密码错误，请认真检查一下吧!"
+            }
+            else {
+                return ""
             }
         }
     },
 
     methods: {
         login() {
-            console.log(this.user.username);
-            console.log(this.user.password);
-            if (this.user.username == "" || this.user.password == "") {
-                alert("用户名或密码不能为空");
+            if (this.user.email == "" || this.user.password == "") {
+                alert("邮箱和密码不能为空");
                 return; // 返回
             }
             else {
-                postLogin(this.user.username, this.user.password);
+                postLogin(this.user.email, this.user.password)
+                    .then((res) => {
+                        if (res.data == "") {
+                            console.log(res, '登录失败!');
+                            this.token = res.data;
+                        }
+                        else {
+                            console.log("登录成功!");
+                            this.$router.push("/")
+                            this.token = res.data;
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error, "登录失败");
+                        this.token = "error"
+                    })
             }
         }
     }
@@ -75,8 +105,6 @@ export default ({
     font-size: 2rem;
     user-select: none;
 }
-
-
 
 .land-input {
     display: block;
@@ -110,6 +138,10 @@ export default ({
 
 .land-button:active {
     box-shadow: none;
+}
+
+.login-message-container {
+    color: red;
 }
 
 @media all and (max-width: 800px) {

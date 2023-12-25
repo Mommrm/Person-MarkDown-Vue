@@ -16,7 +16,8 @@
     "lodash-es": "^4.17.21",
     "marked": "^11.0.0",
     "vue": "^2.7.15",
-    "vue-router": "^3.6.5"
+    "vue-router": "^3.6.5",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",

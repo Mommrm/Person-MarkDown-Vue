@@ -31,9 +31,7 @@
                 </div>
             </div>
             <div class="show-area">
-                <div class="body-preview">
-                    {{ article.content }}
-                </div>
+                <div class="body-preview" v-html="this.html"></div>
             </div>
         </div>
         <div class="info-area">
@@ -62,8 +60,14 @@ export default ({
                 date: "",
                 abstract: "",
                 content: "",
-            }
+            },
+            html: "",
         }
+    },
+    mounted() {
+        setInterval(() => {
+            this.html = this.parseMarkdown(this.article.content);
+        }, 2000);
     },
     methods: {
         //输入时调用更新文章内容
@@ -76,6 +80,31 @@ export default ({
                 console.log(this.enterNum);
                 this.enterNum++;
             }
+        },
+        parseMarkdown(markdown) {
+            // 创建一个匹配所有Markdown语法的正则表达式
+            const regex = /^#{1,6}/;
+            // 将Markdown字符串拆分成行
+            const lines = markdown.split('\n');
+            // 遍历每一行，将Markdown语法替换为HTML
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                // 匹配当前行中的Markdown语法
+                const match = regex.exec(line);
+                // 如果有匹配结果，则将Markdown语法替换为HTML
+                if (match) {
+                    console.log(match)
+                    lines[i] = this.parseHeading(match[0], match[0].length);
+                }
+            }
+            // 将行重新合并成单个字符串
+            return lines.join('\n');
+        },
+        parseHeading(text, num) {
+            var tempHTML = `<h` + num + `>` + `${text}` + `</h` + num + `>`
+            console.log(tempHTML);
+            // 将Markdown的标题语法转换为HTML
+            return tempHTML;
         },
         saveToDraft() {
             //redis缓存草稿 并退出发布页面
