@@ -73,10 +73,11 @@ export default ({
                             //token存在localStorage中
                             localStorage.setItem("token", res.data);
                             //获取到用户信息 存储到pinia中
-                            getUserInfoByToken(res.data).then((info) => {
-                                this.useIndexStore.setUser(info.data);
-                                console.log(this.useIndexStore.user);
-                            })
+                            getUserInfoByToken(res.data)
+                                .then((info) => {
+                                    this.useIndexStore.setUser(info.data);
+                                    console.log(this.useIndexStore.user);
+                                })
                             this.$router.push("/")
                             this.stateCode = 1;
                         }
