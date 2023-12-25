@@ -11,6 +11,7 @@ export const postLogin = (email, password) => {
         user_password: password,
     });
 };
+// 注册
 export const postRegister = (user_name, user_password, user_email) => {
     return api.post('/user/register', {
         user_name: user_name,
@@ -18,10 +19,12 @@ export const postRegister = (user_name, user_password, user_email) => {
         user_email: user_email,
     })
 };
-// 退出登录
-export const postLoginOut = () => {
-    return api.post('/user/loginout', {
-        Token,
-    })
-}
+// 根据token查询用户信息 post方法
+export const getUserInfoByToken = (token) => {
+    return api.post('/user/info', {
+        token: token,
+    });
+};
+
+
 

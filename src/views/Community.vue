@@ -21,8 +21,14 @@
 import ArticleCard from '@/mineCompoents/ArticleCard.vue';
 import ArticleClassify from '@/mineCompoents/ArticleClassify.vue';
 import ArticleMenu from '@/mineCompoents/ArticleMenu.vue';
+import ArticleRequest from '@/axios/articlesRequest'
 
 export default ({
+    mounted: {
+        getArticleList() {
+            ArticleRequest.getArticleList()
+        }
+    },
     components: {
         ArticleCard,
         ArticleClassify,

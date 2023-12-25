@@ -27,7 +27,8 @@
 
 
 <script>
-const { postLogin } = require('../axios/userRequest')
+const { postLogin, getUserInfoByToken } = require('../axios/userRequest')
+import { useIndexStore } from '../stores/index'
 
 export default ({
     data() {
@@ -36,15 +37,16 @@ export default ({
                 password: "",
                 email: "",
             },
-            token: "1",
+            stateCode: -1,
         }
     },
     computed: {
+        //自动处理登录后的message
         loginMessage() {
-            if (this.token == "error") {
+            if (this.stateCode == 2) {
                 return "服务器异常，请稍后再试!";
             }
-            else if (this.token == "") {
+            else if (this.stateCode == 1) {
                 return "邮箱或密码错误，请认真检查一下吧!"
             }
             else {
@@ -52,8 +54,8 @@ export default ({
             }
         }
     },
-
     methods: {
+        //登录
         login() {
             if (this.user.email == "" || this.user.password == "") {
                 alert("邮箱和密码不能为空");
@@ -64,22 +66,29 @@ export default ({
                     .then((res) => {
                         if (res.data == "") {
                             console.log(res, '登录失败!');
-                            this.token = res.data;
+                            this.stateCode = 0;
                         }
                         else {
                             console.log("登录成功!");
+                            //token存在localStorage中
+                            localStorage.setItem("token", res.data);
+                            //获取到用户信息 存储到pinia中
+                            getUserInfoByToken(res.data).then((info) => {
+                                this.useIndexStore.setUser(info.data);
+                                console.log(this.useIndexStore.user);
+                            })
                             this.$router.push("/")
-                            this.token = res.data;
+                            this.stateCode = 1;
                         }
                     })
                     .catch((error) => {
                         console.log(error, "登录失败");
-                        this.token = "error"
+                        this.stateCode = 2;
                     })
             }
         }
-    }
 
+    }
 })
 
 </script>

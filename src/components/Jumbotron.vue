@@ -13,8 +13,8 @@
                 江畔何人初见月，江月何年初照人
             </p>
             <div class="jumbotron-buttons">
-                <b-button variant="primary"><router-link to="/landpage" style="color: white;">登录</router-link></b-button>
-                <b-button variant="success"><router-link to="/community" style="color: white;">社区</router-link></b-button>
+                <b-button variant="primary" @click="toLand">登录</b-button>
+                <b-button variant="success" @click="toCommunication">社区</b-button>
             </div>
 
         </b-jumbotron>
@@ -31,3 +31,18 @@
     justify-content: space-between;
 }
 </style>
+
+<script>
+
+export default ({
+    methods: {
+        toLand() {
+            this.$router.push("/landpage");
+        },
+        toCommunication() {
+            this.$router.push("/community");
+        }
+    }
+})
+
+</script>
